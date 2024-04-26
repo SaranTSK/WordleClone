@@ -160,7 +160,6 @@ namespace Wordle
             // Call insert key input
             if(GameManager.Instance.State == GameManager.GaemState.StartGame)
             {
-                Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
                 GameManager.Instance.GameplayPanel.AddGuessLetter(keyCode);
             }
         }
@@ -170,7 +169,6 @@ namespace Wordle
             // Call confirm input
             if (GameManager.Instance.State == GameManager.GaemState.StartGame)
             {
-                Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
                 GameManager.Instance.GameplayPanel.CheckGuessWord();
             }
         }
@@ -180,7 +178,6 @@ namespace Wordle
             // Call remove lasted key input
             if (GameManager.Instance.State == GameManager.GaemState.StartGame)
             {
-                Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
                 GameManager.Instance.GameplayPanel.RemoveGuessLetter();
             }
         }

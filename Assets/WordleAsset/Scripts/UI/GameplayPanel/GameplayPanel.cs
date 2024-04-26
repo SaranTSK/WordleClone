@@ -175,9 +175,9 @@ namespace Wordle
         {
             if (correctPoint == maxLetter)
             {
-                // TODO: Call Endgame Panel
+                // Call Endgame Panel
                 GameManager.Instance.OnEndGame();
-                Debug.Log($"You win in {guessRound + 1} rounds");
+                GameManager.Instance.ResultPanel.Show(targetWord, guessRound + 1, true);
             }
             else
             {
@@ -194,9 +194,9 @@ namespace Wordle
             }
             else
             {
-                // TODO: Call Endgame Panel
+                // Call Endgame Panel
                 GameManager.Instance.OnEndGame();
-                Debug.Log($"You lose!!!");
+                GameManager.Instance.ResultPanel.Show(targetWord, guessRound + 1, false);
             }
         }
         #endregion

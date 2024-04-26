@@ -23,6 +23,8 @@ namespace Wordle
         [SerializeField] private GameplayPanel gameplayPanel;
         public KeyboardPanel KeyboardPanel => keyboardPanel;
         [SerializeField] private KeyboardPanel keyboardPanel;
+        public ResultPanel ResultPanel => resultPanel;
+        [SerializeField] private ResultPanel resultPanel;
 
         private void Awake()
         {
@@ -65,8 +67,9 @@ namespace Wordle
 
             gameplayPanel.Init();
             keyboardPanel.Init();
+            resultPanel.Init();
 
-            yield return new WaitUntil(() => gameplayPanel.IsInit && keyboardPanel.IsInit);
+            yield return new WaitUntil(() => gameplayPanel.IsInit && keyboardPanel.IsInit && resultPanel.IsInit);
 
             OnStartGame();
         }
