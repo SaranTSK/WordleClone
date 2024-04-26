@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Wordle
 {
@@ -9,6 +10,7 @@ namespace Wordle
     {
         [Header("Header")]
         [SerializeField] private TMP_Text guessText;
+        [SerializeField] private Button exitButton;
         [Header("Content")]
         [SerializeField] private Transform wordGroupParent;
         [SerializeField] private GameplayLetter letterPrefab;
@@ -25,6 +27,7 @@ namespace Wordle
         public void Init()
         {
             CreateLetters();
+            exitButton.onClick.AddListener(OnClickExit);
 
             isInit = true;
         }
@@ -198,6 +201,14 @@ namespace Wordle
                 GameManager.Instance.OnEndGame();
                 GameManager.Instance.ResultPanel.Show(targetWord, guessRound + 1, false);
             }
+        }
+        #endregion
+
+        #region Button Action
+        private void OnClickExit()
+        {
+            Debug.Log($"ExitGame");
+            Application.Quit();
         }
         #endregion
     }
