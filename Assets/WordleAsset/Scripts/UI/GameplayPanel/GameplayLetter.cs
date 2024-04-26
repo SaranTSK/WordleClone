@@ -24,14 +24,18 @@ namespace Wordle
         [SerializeField] private Sprite emptySprite;
         [SerializeField] private Sprite filledSprite;
 
-        private KeyCode keyCode;
-        private LetterStatus letterStatus;
+        private Color lerpedColor = WordleConstant.Color.lightGrey;
+        private float lerpTime = 1f;
+        private float lerpDuration = 1f;
+
+        private void Update()
+        {
+            UpdateWarning();
+        }
 
         public void Init(KeyCode keyCode, LetterStatus letterStatus)
         {
-            this.keyCode = keyCode;
-            this.letterStatus = letterStatus;
-
+            SetWarning(false);
             SetLetterText(keyCode);
             SetLetterStatus(keyCode, letterStatus);
             SetLetterColor(letterStatus);
@@ -61,6 +65,21 @@ namespace Wordle
             }
         }
 
+        public void SetWarning(bool value)
+        {
+            lerpTime = value ? 0f : lerpDuration * 2f;
+        }
+
+        private void UpdateWarning()
+        {
+            if (lerpTime < lerpDuration)
+            {
+                lerpTime += Time.deltaTime;
+                lerpedColor = Color.Lerp(WordleConstant.Color.lightGrey, Color.red, Mathf.PingPong(lerpTime * 2f, 1));
+                image.color = lerpedColor;
+            }
+        }
+
         private void SetLetterText(KeyCode keyCode)
         {
             letterText.text = keyCode.ToString().ToUpper();
@@ -68,7 +87,7 @@ namespace Wordle
 
         private void SetLetterStatus(KeyCode keyCode, LetterStatus letterStatus)
         {
-            if(keyCode == KeyCode.None)
+            if (keyCode == KeyCode.None)
             {
                 image.sprite = emptySprite;
                 letterText.gameObject.SetActive(false);
@@ -78,5 +97,6 @@ namespace Wordle
                 image.sprite = filledSprite;
                 letterText.gameObject.SetActive(true);
             }
-        }    }
+        }
+    }
 }

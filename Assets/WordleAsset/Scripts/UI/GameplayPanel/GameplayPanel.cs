@@ -146,6 +146,11 @@ namespace Wordle
             else
             {
                 // TODO: Add feedback option
+                for (int i = guessWord.Length; i < maxLetter; i++)
+                {
+                    GameplayLetter letter = wordGroupParent.GetChild(guessRound).GetChild(i).GetComponent<GameplayLetter>();
+                    letter.SetWarning(true);
+                }
                 Debug.LogWarning($"You must assign all letters");
             }
         }
