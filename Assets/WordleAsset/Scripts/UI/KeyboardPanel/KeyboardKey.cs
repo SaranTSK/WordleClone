@@ -18,7 +18,7 @@ namespace Wordle
     {
         None = 0,
         Delete = 1,
-        Confirm = 2,
+        Enter = 2,
 
         A = 3,
         B = 4,
@@ -50,10 +50,12 @@ namespace Wordle
 
     public class KeyboardKey : MonoBehaviour
     {
+        [Header("Component")]
         [SerializeField] private Image image;
         [SerializeField] private Button button;
         [SerializeField] private TMP_Text keyText;
 
+        public KeyCode KeyCode => keyCode;
         private KeyCode keyCode;
         private KeyStatus keyStatus;
 
@@ -72,7 +74,7 @@ namespace Wordle
             SetKeyStatus(KeyStatus.Empty);
         }
 
-        private void SetKeyStatus(KeyStatus keyStatus)
+        public void SetKeyStatus(KeyStatus keyStatus)
         {
             this.keyStatus = keyStatus;
             SetKeyColor(keyStatus);
@@ -96,9 +98,9 @@ namespace Wordle
 
         private void SetKeyText(KeyCode keyCode)
         {
-            keyText.text = keyCode.ToString();
+            keyText.text = keyCode.ToString().ToUpper();
 
-            if(keyCode == KeyCode.Confirm || keyCode == KeyCode.Delete)
+            if(keyCode == KeyCode.Enter || keyCode == KeyCode.Delete)
             {
                 image.rectTransform.sizeDelta = new Vector2(200, 100);
             }
@@ -112,8 +114,8 @@ namespace Wordle
         {
             switch (keyCode)
             {
-                case KeyCode.Confirm:
-                    button.onClick.AddListener(OnClickConfirmKey);
+                case KeyCode.Enter:
+                    button.onClick.AddListener(OnClickEnterKey);
                     break;
                 case KeyCode.Delete:
                     button.onClick.AddListener(OnClickDeleteKey);
@@ -155,20 +157,32 @@ namespace Wordle
         #region Button Action
         private void OnClickNormalKey()
         {
-            // TODO: Call insert key input
-            Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
+            // Call insert key input
+            if(GameManager.Instance.State == GameManager.GaemState.StartGame)
+            {
+                Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
+                GameManager.Instance.GameplayPanel.AddGuessLetter(keyCode);
+            }
         }
 
-        private void OnClickConfirmKey()
+        private void OnClickEnterKey()
         {
-            // TODO: Call confirm input
-            Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
+            // Call confirm input
+            if (GameManager.Instance.State == GameManager.GaemState.StartGame)
+            {
+                Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
+                GameManager.Instance.GameplayPanel.CheckGuessWord();
+            }
         }
 
         private void OnClickDeleteKey()
         {
-            // TODO: Call remove lasted key input
-            Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
+            // Call remove lasted key input
+            if (GameManager.Instance.State == GameManager.GaemState.StartGame)
+            {
+                Debug.Log($"OnClick [{keyCode}] status [{keyStatus}]");
+                GameManager.Instance.GameplayPanel.RemoveGuessLetter();
+            }
         }
         #endregion
     }

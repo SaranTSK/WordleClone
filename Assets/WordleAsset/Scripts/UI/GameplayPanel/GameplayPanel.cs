@@ -22,15 +22,6 @@ namespace Wordle
         private string targetWord = string.Empty;
         private string guessWord = string.Empty;
 
-        private void Update()
-        {
-            //if(Input.GetKeyDown(UnityEngine.KeyCode.R))
-            //{
-            //    targetWord = string.Empty;
-            //    RandomGuessWord();
-            //}
-        }
-
         public void Init()
         {
             CreateLetters();
@@ -133,14 +124,17 @@ namespace Wordle
                     {
                         correctPoint++;
                         letter.SetLetterColor(LetterStatus.Correct);
+                        GameManager.Instance.KeyboardPanel.SetKeyboardKeyStatus(GetKeycodeParse(guessWord[i]), KeyStatus.Correct);
                     }
                     else if (IsCorrectSwap(guessWord[i]))
                     {
                         letter.SetLetterColor(LetterStatus.Swap);
+                        GameManager.Instance.KeyboardPanel.SetKeyboardKeyStatus(GetKeycodeParse(guessWord[i]), KeyStatus.Correct);
                     }
                     else
                     {
                         letter.SetLetterColor(LetterStatus.Wrong);
+                        GameManager.Instance.KeyboardPanel.SetKeyboardKeyStatus(GetKeycodeParse(guessWord[i]), KeyStatus.Wrong);
                     }
                 }
 
@@ -151,6 +145,15 @@ namespace Wordle
                 // TODO: Add feedback option
                 Debug.LogWarning($"You must assign all letters");
             }
+        }
+
+        private KeyCode GetKeycodeParse(char letter)
+        {
+            if(System.Enum.TryParse(letter.ToString(), out KeyCode keyCode))
+            {
+                return keyCode;
+            }
+            return KeyCode.None;
         }
 
         private bool IsCorrectLetter(char letter, int index)
@@ -173,7 +176,8 @@ namespace Wordle
             if (correctPoint == maxLetter)
             {
                 // TODO: Call Endgame Panel
-                Debug.Log($"You win in {guessRound} rounds");
+                GameManager.Instance.OnEndGame();
+                Debug.Log($"You win in {guessRound + 1} rounds");
             }
             else
             {
@@ -183,15 +187,15 @@ namespace Wordle
 
         private void CheckGuessRound()
         {
-            if(guessRound < wordGroupParent.childCount)
+            if(guessRound < wordGroupParent.childCount - 1)
             {
                 guessRound++;
                 guessWord = string.Empty;
-                targetWord = string.Empty;
             }
             else
             {
                 // TODO: Call Endgame Panel
+                GameManager.Instance.OnEndGame();
                 Debug.Log($"You lose!!!");
             }
         }

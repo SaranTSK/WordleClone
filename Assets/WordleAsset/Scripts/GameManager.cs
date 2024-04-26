@@ -19,7 +19,9 @@ namespace Wordle
         public GaemState State => state;
         private GaemState state;
 
+        public GameplayPanel GameplayPanel => gameplayPanel;
         [SerializeField] private GameplayPanel gameplayPanel;
+        public KeyboardPanel KeyboardPanel => keyboardPanel;
         [SerializeField] private KeyboardPanel keyboardPanel;
 
         private void Awake()
@@ -46,10 +48,10 @@ namespace Wordle
                 Application.Quit();
             }
 
-            //if (Input.GetKeyDown(UnityEngine.KeyCode.S))
-            //{
-            //    OnStartGame();
-            //}
+            if (Input.GetKeyDown(UnityEngine.KeyCode.R))
+            {
+                OnStartGame();
+            }
         }
 
         private void Init()

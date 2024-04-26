@@ -31,6 +31,24 @@ namespace Wordle
             ResetKeyboardKey();
         }
 
+        public void SetKeyboardKeyStatus(KeyCode keyCode, KeyStatus keyStatus)
+        {
+            for (int row = 0; row < keyRows.Count; row++)
+            {
+                Transform parent = keyboardParent.GetChild(row);
+
+                for (int col = 0; col < keyRows[row].keys.Count; col++)
+                {
+                    KeyboardKey key = parent.GetChild(col).GetComponent<KeyboardKey>();
+                    if(key.KeyCode == keyCode)
+                    {
+                        key.SetKeyStatus(keyStatus);
+                        break;
+                    }
+                }
+            }
+        }
+
         private void CreateKeyboardKey()
         {
             for(int row = 0; row < keyRows.Count; row++)
