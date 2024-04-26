@@ -19,6 +19,9 @@ namespace Wordle
         public GaemState State => state;
         private GaemState state;
 
+        [SerializeField] private GameplayPanel gameplayPanel;
+        [SerializeField] private KeyboardPanel keyboardPanel;
+
         private void Awake()
         {
             if(instance == null)
@@ -36,21 +39,53 @@ namespace Wordle
             Init();
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(UnityEngine.KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+
+            //if (Input.GetKeyDown(UnityEngine.KeyCode.S))
+            //{
+            //    OnStartGame();
+            //}
+        }
+
         private void Init()
         {
+            StartCoroutine(InitAndWaitUntilCompleted());
+        }
+
+        private IEnumerator InitAndWaitUntilCompleted()
+        {
             state = GaemState.None;
+
+            gameplayPanel.Init();
+            keyboardPanel.Init();
+
+            yield return new WaitUntil(() => gameplayPanel.IsInit && keyboardPanel.IsInit);
+
+            OnStartGame();
         }
 
         #region GameState Action
         public void OnStartGame()
         {
-            // 1 Reset gameplay and keyboard status
+            Debug.Log("OnStartGame");
+            // 1 Create gameplay and keyboard status
+            state = GaemState.StartGame;
+            gameplayPanel.Clear();
+            keyboardPanel.Clear();
             // 2 Random new 5 letters word
+            gameplayPanel.RandomGuessWord();
         }
 
         public void OnEndGame()
         {
+            Debug.Log("OnEndGame");
             // 1 Show result or show answer
+            state = GaemState.EndGame;
         }
         #endregion
     }

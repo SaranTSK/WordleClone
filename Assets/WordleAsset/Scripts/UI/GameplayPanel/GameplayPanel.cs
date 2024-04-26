@@ -14,29 +14,28 @@ namespace Wordle
         [SerializeField] private GameplayLetter letterPrefab;
         [SerializeField] private int maxLetter = 5;
 
+        public bool IsInit => isInit;
+        private bool isInit = false;
+
         private string randomLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         private int guessRound = 0;
         private string targetWord = string.Empty;
         private string guessWord = string.Empty;
 
-        private void Start ()
-        {
-            Init();
-        }
-
         private void Update()
         {
-            if(Input.GetKeyDown(UnityEngine.KeyCode.R))
-            {
-                targetWord = string.Empty;
-                RandomGuessWord();
-            }
+            //if(Input.GetKeyDown(UnityEngine.KeyCode.R))
+            //{
+            //    targetWord = string.Empty;
+            //    RandomGuessWord();
+            //}
         }
 
         public void Init()
         {
             CreateLetters();
-            RandomGuessWord();
+
+            isInit = true;
         }
 
         public void Clear()

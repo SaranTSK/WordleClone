@@ -67,7 +67,12 @@ namespace Wordle
             InitOnClick(keyCode);
         }
 
-        public void SetKeyStatus(KeyStatus keyStatus)
+        public void Clear()
+        {
+            SetKeyStatus(KeyStatus.Empty);
+        }
+
+        private void SetKeyStatus(KeyStatus keyStatus)
         {
             this.keyStatus = keyStatus;
             SetKeyColor(keyStatus);
